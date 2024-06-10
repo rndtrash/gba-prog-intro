@@ -6,29 +6,39 @@ on:
   pull_request:
     branches: [ master ]
 
-env:
-  BUILD_TYPE: Release
-
 jobs:
   build:
     runs-on: ubuntu-latest
+    container: devkitpro/devkitarm:latest
+
     steps:
     - name: Checkout repository and submodules
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         submodules: recursive
 
-    - name: Install dependencies
-      run: sudo apt install cmake
+    - name: Install the latest CMake (>= 3.21)
+      run: >
+        sudo apt purge -y --auto-remove cmake
+        && sudo apt update
+        && sudo apt install -y python3-pip
+        && pip install -U cmake
+
+    - name: Remove the outdated built-in libs
+      run: >
+        yes | sudo dkp-pacman -R libtonc
 
     - name: Configure
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      run: cmake --preset gba-toolchain
 
     - name: Build
-      run: cmake --build build
+      run: cmake --build --preset release
+
+    - name: Copy the final ROM
+      run: cmake --install cmake-build
 
     - name: Publish artifacts
       uses: actions/upload-artifact@v2
       with:
         name: GBA ROM
-        path: ${{github.workspace}}/build/gbajam-2022.gba
+        path: ${{github.workspace}}/bin/gba-prog-intro.gba
