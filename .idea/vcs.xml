@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/gba-toolchain" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/gba-toolchain/lib/agbabi" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/gba-toolchain/lib/maxmod/source" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/gba-toolchain/lib/tonclib/source" vcs="Git" />
+  </component>
+</project>
